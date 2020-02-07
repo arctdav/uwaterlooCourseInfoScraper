@@ -113,9 +113,14 @@ try:
         print([(0, 0)]) # TODO: turn to return when joining
     
     # Request successful, not parsing a not existing course, all params correct
+
+    # each row in the HTML table 
     alltr = enrollTable.find_all("tr")
-    print(alltr[0].contents)
-    
+    innerTable = alltr[3]
+    print(innerTable)
+    for tr in alltr:
+        if len(tr) > 2 and tr.contents[2]:
+            pass
 except AssertionError as ae:
     print(ae)
     raise
