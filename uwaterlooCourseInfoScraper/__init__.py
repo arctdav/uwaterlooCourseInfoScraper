@@ -45,28 +45,82 @@ def requestCourseEnroll(sess, subject, cournum):
     Return:
         Request instance
     """
-    if not sess or not subject or not cournum:
-        print("ERROR: please input ALL of the sess, subject, cournum parameters")
-        return None
-    else:
-        url = 'http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl'
-
-        headers = {"Accept-Language": "en-US,en;q=0.5",
-        "Accept-Encoding": "gzip,deflate",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Length": "45",
-        "Origin": "http://www.adm.uwaterloo.ca",
-        "Connection": "keep-alive",
-        "Referer": "http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html",
-        "Upgrade-Insecure-Requests": "1"}
-            
-        data = "level=under&sess=%s&subject=%s&cournum=%s" % (sess, subject.upper(), cournum)
-
-        req = requests.post(url, headers=headers, data=data)
-
-        if req.status_code == requests.codes.ok:
-            print("Request Successful")
-            return req
+    try:
+        if not sess or not subject or not cournum:
+            print("ERROR: please input ALL of the sess, subject, cournum parameters")
+            return None
         else:
-            print("Request ERROR: %s" % req.status_code)
-            return req
+            url = 'http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl'
+    
+            headers = {"Accept-Language": "en-US,en;q=0.5",
+            "Accept-Encoding": "gzip,deflate",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Length": "45",
+            "Origin": "http://www.adm.uwaterloo.ca",
+            "Connection": "keep-alive",
+            "Referer": "http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html",
+            "Upgrade-Insecure-Requests": "1"}
+                
+            data = "level=under&sess=%s&subject=%s&cournum=%s" % (sess, subject.upper(), cournum)
+    
+            req = requests.post(url, headers=headers, data=data)
+    
+            if req.status_code == requests.codes.ok:
+                print("Request Successful")
+                return req
+            else:
+                print("Request ERROR: %s" % req.status_code)
+                return req
+    except Exception as e:
+        print(f"ERROR: requestCourseEnroll -> {e}")
+        raise
+
+def getCourseEnrollInfo(sess, subject, cournum):
+    try:
+        req = requestCourseEnroll(sess, subject, cournum)
+        
+        # Create a BeautifulSoup object
+        soup = BeautifulSoup(req.text, 'html.parser')
+        #print(soup.prettify())
+        print(soup.find(border="2").contents)
+        enrollTable = soup.find(border="2")
+        
+    except Exception as e:
+        print(f"ERROR: getCourseEnrollInfo -> {e}")
+        raise
+
+
+
+
+"""
+
+
+    Return:
+        List[tuple(int, int)], [(Enrl Cap, Enrl Tot), ...]
+"""
+try:
+    sess, subject, cournum = 1201, "Cs", 135
+    
+    if sess <= 1000 or not subject or cournum < 100:
+        raise AssertionError("Wrong Parameters, sess <= 1000 or not subjet or cournum < 100")
+    req = requestCourseEnroll(sess, subject, cournum)
+    if req == None or req.status_code != requests.codes.ok:
+        raise AssertionError("Request to server is unsuccessful")
+    # Create a BeautifulSoup object
+    soup = BeautifulSoup(req.text, 'html.parser')
+    enrollTable = soup.find(border="2")
+    if len(enrollTable.contents) == 1:
+        print([(0, 0)]) # TODO: turn to return when joining
+    
+    # Request successful, not parsing a not existing course, all params correct
+    alltr = enrollTable.find_all("tr")
+    print(alltr[0].contents)
+    
+except AssertionError as ae:
+    print(ae)
+    raise
+except Exception as e:
+    print(f"ERROR: getCourseEnrollInfo -> {e}")
+    raise
+
+
