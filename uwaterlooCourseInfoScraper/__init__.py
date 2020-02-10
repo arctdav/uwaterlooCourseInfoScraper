@@ -85,12 +85,13 @@ def getCourseEnrollInfo(sess, subject, cournum):
         cournum: int or str
 
     Return:
-        List[tuple(int, str, int, int)], [(Class, Comp Sec, Enrl Cap, Enrl Tot), ...]
+        List[Dict("Class": int, "CompSec": str, "EnrlCap": int, "EnrlTot": int, "Instructor": str)]
     """
     try:
-        if sess <= 1000 or int(sess) <= 1000 or not subject or cournum < 100 or 1000 < cournum \
+        if sess <= 1000 or int(sess) <= 1000 or not subject or cournum < 100 or 1000 <= cournum \
             or int(cournum) < 100 or 1000 < int(cournum):
-            raise AssertionError("Wrong Parameters, sess <= 1000 or not subjet or cournum < 100")
+            raise AssertionError("Wrong Parameters, sess <= 1000 or int(sess) <= 1000 or not subject or cournum < 100 or 1000 < cournum \
+            or int(cournum) < 100 or 1000 < int(cournum)")
         req = requestCourseEnroll(sess, subject, cournum)
         if req == None or req.status_code != requests.codes.ok:
             raise AssertionError("Request to server is unsuccessful")
@@ -100,8 +101,7 @@ def getCourseEnrollInfo(sess, subject, cournum):
 
         # * This course does not exist this term
         if len(enrollTable.contents) == 1:
-            print([(-1, "No Result", -1, -1)]) # TODO: turn to return when joining
-            return
+            return [{"Class": -1, "CompSec": "No Result", "EnrlCap": -1, "EnrlTot": -1, "Instructor": "No Result"}]
         
         # * Request successful, not parsing a not existing course, all params correct
         # * each row in the HTML table 
@@ -119,8 +119,9 @@ def getCourseEnrollInfo(sess, subject, cournum):
                 CompSec_th = tr.contents[1]
                 EnrlCap_th = tr.contents[6]
                 EnrlTot_th = tr.contents[7]
-                res.append((Class_th.getText(), CompSec_th.getText(),\
-                     EnrlCap_th.getText(), EnrlTot_th.getText()))
+                Instructor_th = tr.contents[12]
+                res.append({"Class": int(Class_th.getText().strip()), "CompSec": CompSec_th.getText().strip(),\
+                     "EnrlCap": int(EnrlCap_th.getText().strip()), "EnrlTot": int(EnrlTot_th.getText().strip()), "Instructor": Instructor_th.getText().strip()})
         print(res)
         return res
                 
@@ -133,12 +134,3 @@ def getCourseEnrollInfo(sess, subject, cournum):
     except Exception as e:
         print(f"ERROR: getCourseEnrollInfo -> {e}")
         raise
-
-
-
-def main():
-    getCourseEnrollInfo(1201, "cs", 135)
-
-
-if __name__ == "__main__":
-    main()
