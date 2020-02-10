@@ -10,7 +10,7 @@ def getPrefix() -> List[str]:
     """
     Get the most up-to-date course prefix list from http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html
 
-    Parameters:
+    Params:
         None
     
     Return:
@@ -37,7 +37,7 @@ def requestCourseEnroll(sess, subject, cournum):
     Get a request instance from http://www.adm.uwaterloo.ca/cgi-bin/cgiwrap/infocour/salook.pl
     after requesting the class enrollment data
 
-    Parameters:
+    Params:
         sess: int or str
         subject: str
         cournum: int or str
@@ -76,56 +76,69 @@ def requestCourseEnroll(sess, subject, cournum):
         raise
 
 def getCourseEnrollInfo(sess, subject, cournum):
+    """
+    Get the section information, in list of tuples 
+
+    Params: 
+        sess: int or str
+        subject: str
+        cournum: int or str
+
+    Return:
+        List[tuple(int, str, int, int)], [(Class, Comp Sec, Enrl Cap, Enrl Tot), ...]
+    """
     try:
+        if sess <= 1000 or int(sess) <= 1000 or not subject or cournum < 100 or 1000 < cournum \
+            or int(cournum) < 100 or 1000 < int(cournum):
+            raise AssertionError("Wrong Parameters, sess <= 1000 or not subjet or cournum < 100")
         req = requestCourseEnroll(sess, subject, cournum)
-        
-        # Create a BeautifulSoup object
+        if req == None or req.status_code != requests.codes.ok:
+            raise AssertionError("Request to server is unsuccessful")
+        # * Create a BeautifulSoup object
         soup = BeautifulSoup(req.text, 'html.parser')
-        #print(soup.prettify())
-        print(soup.find(border="2").contents)
         enrollTable = soup.find(border="2")
+
+        # * This course does not exist this term
+        if len(enrollTable.contents) == 1:
+            print([(-1, "No Result", -1, -1)]) # TODO: turn to return when joining
+            return
         
+        # * Request successful, not parsing a not existing course, all params correct
+        # * each row in the HTML table 
+        alltr = enrollTable.find_all("tr")
+        targetTableRows = alltr[2].find_all("tr")
+        #print(targetTableRows[7].contents)
+        if not targetTableRows:
+            targetTableRows = alltr[3].find_all("tr")
+        
+        # * parse the each row in targetTableRows
+        res = []
+        for tr in targetTableRows:
+            if len(tr) == 13:
+                Class_th = tr.contents[0]
+                CompSec_th = tr.contents[1]
+                EnrlCap_th = tr.contents[6]
+                EnrlTot_th = tr.contents[7]
+                res.append((Class_th.getText(), CompSec_th.getText(),\
+                     EnrlCap_th.getText(), EnrlTot_th.getText()))
+        print(res)
+        return res
+                
+
+    except RuntimeError as re:
+        raise re
+    except AssertionError as ae:
+        #print(ae)
+        raise ae
     except Exception as e:
         print(f"ERROR: getCourseEnrollInfo -> {e}")
         raise
 
 
 
-
-"""
-
-
-    Return:
-        List[tuple(int, int)], [(Enrl Cap, Enrl Tot), ...]
-"""
-try:
-    sess, subject, cournum = 1201, "Cs", 135
-    
-    if sess <= 1000 or not subject or cournum < 100:
-        raise AssertionError("Wrong Parameters, sess <= 1000 or not subjet or cournum < 100")
-    req = requestCourseEnroll(sess, subject, cournum)
-    if req == None or req.status_code != requests.codes.ok:
-        raise AssertionError("Request to server is unsuccessful")
-    # Create a BeautifulSoup object
-    soup = BeautifulSoup(req.text, 'html.parser')
-    enrollTable = soup.find(border="2")
-    if len(enrollTable.contents) == 1:
-        print([(0, 0)]) # TODO: turn to return when joining
-    
-    # Request successful, not parsing a not existing course, all params correct
-
-    # each row in the HTML table 
-    alltr = enrollTable.find_all("tr")
-    innerTable = alltr[3]
-    print(innerTable)
-    for tr in alltr:
-        if len(tr) > 2 and tr.contents[2]:
-            pass
-except AssertionError as ae:
-    print(ae)
-    raise
-except Exception as e:
-    print(f"ERROR: getCourseEnrollInfo -> {e}")
-    raise
+def main():
+    getCourseEnrollInfo(1201, "cs", 135)
 
 
+if __name__ == "__main__":
+    main()
