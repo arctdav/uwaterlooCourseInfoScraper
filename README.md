@@ -6,35 +6,36 @@ This library only supports Python3.6+
 
 Please do not spam their website. 
 
-## Getting Started (TODO)
+## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Make sure you have Python 3.6+
 
-### Prerequisites (TODO)
+### Prerequisites
 
-What things you need to install the software and how to install them
+In your terminal/shell, type:
+```
+python -m pip install --upgrade pip
+```
+Then install bs4, requests
 
 ```
-Give examples
+python -m pip install requests bs4
 ```
 
-### Installing (TODO)
+### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Type the following to terminal/shell to install
 
 ```
-Give the example
+pip install -i https://test.pypi.org/simple/ uwaterlooCourseInfoScraper
 ```
 
-And repeat
+
+If installation successful, you will see something like this:
 
 ```
-until finished
+Successfully installed uwaterlooCourseInfoScraper-1.0.7
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Built With
 
@@ -44,12 +45,9 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Authors
 
-* **arctdav** - *Initial work* - [uwaterlooCourseInfoScraper](https://github.com/arctdav/uwaterlooCourseInfoScraper)
+* **arctdav** - *Initial work* - [UW-course-info-scraping](https://github.com/arctdav/UW-course-info-scraping)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
-* https://github.com/arctdav/UW-course-info-scraping
