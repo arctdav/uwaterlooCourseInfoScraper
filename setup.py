@@ -5,13 +5,15 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="uwaterlooCourseInfoScraper",
-    version="1.0.0",
+    version="1.0.1",
     author="arctdav",
     author_email="arctdav@gmail.com",
-    description="This Python side project scraps all UWaterloo course information \
-        from its website, and exports all these information into an Excel file. \
-        This script used BeautifulSoup from bs4, request, and csv Python libraries \
-        to achieve such goal. Please do not spam their website.",
+    description="This Python library scraps all UWaterloo course information from its website: \
+        http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html \
+        \n \
+        This library only supports Python3.6+ \
+        \n \
+        Please do not spam their website.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/arctdav/UW-course-info-scraping",
