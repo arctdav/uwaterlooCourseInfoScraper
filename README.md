@@ -34,7 +34,7 @@ pip install -i https://test.pypi.org/simple/ uwaterlooCourseInfoScraper
 If installation successful, you will see something like this:
 
 ```
-Successfully installed uwaterlooCourseInfoScraper-1.0.7
+Successfully installed uwaterlooCourseInfoScraper-1.0.8
 ```
 
 ### A Simple Example
