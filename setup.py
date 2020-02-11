@@ -5,18 +5,16 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="uwaterlooCourseInfoScraper",
-    version="1.0.2",
+    version="1.0.7",
     author="arctdav",
     author_email="arctdav@gmail.com",
     description="This Python library scraps all UWaterloo course information from its website: \
-        http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html \
-        \n \
-        This library only supports Python3.6+ \
-        \n \
+        http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html                 \
+        This library only supports Python3.6+. \
         Please do not spam their website.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/arctdav/UW-course-info-scraping",
+    url="https://github.com/arctdav/uwaterlooCourseInfoScraper",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -24,8 +22,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=[
-        "bs4>=0.01",
-        "requests>=2.21.0",
-    ],
+    # can't do this, not in real PYPI
+    #install_requires=[
+    #    "bs4>=0.0.1",
+    #    "requests>=2.21.0",
+    #],
+    
 )
