@@ -37,6 +37,19 @@ If installation successful, you will see something like this:
 Successfully installed uwaterlooCourseInfoScraper-1.0.7
 ```
 
+### A Simple Example
+
+```
+import uwaterlooCourseInfoScraper as uwcis
+
+print(uwcis.getCourseEnrollInfo(1201, "CS", 135))
+# OUTPUT: 
+# Request Successful
+# [{'Class': XXXX, 'CompSec': 'LEC 001', 'EnrlCap': 90, 'EnrlTot': 71, 'Instructor': 'XXXX'}, {'Class': XXXX, 'CompSec': 
+# 'LEC 002', 'EnrlCap': 90, 'EnrlTot': 65, 'Instructor': 'XXXX'}, {'Class': 6002, 'CompSec': 'TST 201', 'EnrlCap': 180, 
+# 'EnrlTot': 136, 'Instructor': 'XXXX'}]
+```
+
 ## Built With
 
 * [requests](https://requests.readthedocs.io/en/master/) - Python3 HTTP requests package
