@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="uwaterlooCourseInfoScraper",
-    version="1.0.1",
+    version="1.0.2",
     author="arctdav",
     author_email="arctdav@gmail.com",
     description="This Python library scraps all UWaterloo course information from its website: \
@@ -25,7 +25,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        "bs4",
-        "requests",
+        "bs4>=0.01",
+        "requests>=2.21.0",
     ],
 )
