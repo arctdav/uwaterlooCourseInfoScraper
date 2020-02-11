@@ -122,10 +122,9 @@ def getCourseEnrollInfo(sess, subject, cournum):
                 Instructor_th = tr.contents[12]
                 res.append({"Class": int(Class_th.getText().strip()), "CompSec": CompSec_th.getText().strip(),\
                      "EnrlCap": int(EnrlCap_th.getText().strip()), "EnrlTot": int(EnrlTot_th.getText().strip()), "Instructor": Instructor_th.getText().strip()})
-        print(res)
+        print("Request Result: " + str(res))
         return res
                 
-
     except RuntimeError as re:
         raise re
     except AssertionError as ae:
@@ -134,3 +133,5 @@ def getCourseEnrollInfo(sess, subject, cournum):
     except Exception as e:
         print(f"ERROR: getCourseEnrollInfo -> {e}")
         raise
+
+getCourseEnrollInfo(1201, "CS", 135)
