@@ -8,7 +8,7 @@ Please do not spam their website.
 
 ## Getting Started
 
-Make sure you have Python 3.6+
+Install Python 3.6+
 
 ### Prerequisites
 
