@@ -1,4 +1,4 @@
-# Web Scraper for Uwaterloo course information
+# Web Scraper for UWaterloo Course Information
 
 This Python library scraps all UWaterloo course information from its website: http://www.adm.uwaterloo.ca/infocour/CIR/SA/under.html
 
